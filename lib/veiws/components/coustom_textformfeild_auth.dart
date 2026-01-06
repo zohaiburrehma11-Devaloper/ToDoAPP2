@@ -11,7 +11,8 @@ class _CoustomTextformfeildAuthState extends State<CoustomTextformfeildAuth> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ,
+      height: 12,
+
     );
   }
 }

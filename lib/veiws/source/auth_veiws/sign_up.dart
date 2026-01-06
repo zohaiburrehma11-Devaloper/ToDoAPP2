@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todoapp/main.dart';
 import 'package:todoapp/veiws/components/coustom_button.dart';
 import 'package:todoapp/veiws/components/text_widget.dart';
 import 'package:todoapp/veiws/utills/constants/colors.dart';
+import '../../components/password_textformfeild_auth.dart';
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -48,6 +47,13 @@ class _SignUpState extends State<SignUp> {
             SizedBox(width: 10,),
             TextWidget(text: 'Password', textSize: 12, weight: FontWeight.w200,textcolor: ToDoAppcolors.PrimaryColor2,)
           ],),
+          PasswordTextformfeildWidget(
+            text: '',
+            preicon: Icons.lock,
+            iconcolor: ToDoAppcolors.PrimaryColor1, N_controller: passwordcontroller,
+            posticon: Icons.visibility,
+            tap: (){},
+          ),
           CoustomButton(Navigate_to: (){}, sign_text: 'Sign up'),
 
 

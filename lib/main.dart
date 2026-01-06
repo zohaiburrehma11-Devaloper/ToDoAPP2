@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/firebase_options.dart';
-import 'package:todoapp/veiws/source/starting_veiws/onboarding_screen.dart';
+import 'package:todoapp/sir_lectures_practice/insert_data.dart';
 
 void main()
 async
@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnboardingScreen(),
+      home: InsertData(),
     );
   }
 }
