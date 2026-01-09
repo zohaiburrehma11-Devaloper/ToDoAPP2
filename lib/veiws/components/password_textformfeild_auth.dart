@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/veiws/utills/constants/colors.dart';
 class PasswordTextformfeildWidget extends StatefulWidget {
-  PasswordTextformfeildWidget({super.key, required this.text, required this.preicon, this.posticon=Icons.person, required this.iconcolor,required this.N_controller,required this.tap,  });
+  PasswordTextformfeildWidget({super.key, required this.text,  this.posticon=Icons.person, required this.iconcolor,required this.N_controller,required this.tap,  });
   final String text;
-  final IconData preicon;
   final IconData posticon;
   final Color iconcolor;
   final TextEditingController N_controller;
@@ -24,9 +23,9 @@ class _TextformfeildWidgetState extends State<PasswordTextformfeildWidget> {
       height: 44,
       width: 324,
       decoration: BoxDecoration(
-        color: ToDoAppcolors.PrimaryColor1,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color:ToDoAppcolors.PrimaryColor1 ),
+        color: ToDoAppcolors.Default,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 0.5,color:ToDoAppcolors.PrimaryColor2 ),
       ),
       child: TextFormField(
         obscureText: issecure,
@@ -34,11 +33,10 @@ class _TextformfeildWidgetState extends State<PasswordTextformfeildWidget> {
         decoration: InputDecoration(
             border: InputBorder.none,
             hintStyle: GoogleFonts.poppins(
-              color: ToDoAppcolors.PrimaryColor1,
+              color: ToDoAppcolors.PrimaryColor2,
               fontSize: 14,
             ),
             hintText: widget.text,
-            prefixIcon: Icon(widget.preicon,color:widget.iconcolor,),
             suffixIcon:IconButton(
                 onPressed: (){
                   if(issecure==true)

@@ -13,7 +13,7 @@ import '../utills/constants/colors.dart';
          child: InkWell(
            onTap: Navigate_to,
            child: Container(
-             height:53 ,
+             height:48 ,
              width: 330,
              decoration: BoxDecoration(
                color: ToDoAppcolors.PrimaryColor1,

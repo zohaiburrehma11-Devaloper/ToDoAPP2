@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/veiws/components/coustom_button.dart';
 import 'package:todoapp/veiws/components/text_widget.dart';
+import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 import 'package:todoapp/veiws/utills/constants/colors.dart';
+import 'package:todoapp/veiws/utills/constants/images.dart';
+import '../../components/coustom_textformfeild_auth.dart';
 import '../../components/password_textformfeild_auth.dart';
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -13,51 +19,136 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   TextEditingController emailcontroller=TextEditingController();
   TextEditingController passwordcontroller=TextEditingController();
+  TextEditingController nameController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        SizedBox(height: 80,),
-        Center(child:
-          TextWidget(text: 'Create Account', textSize: 25, weight: FontWeight.bold,)
-          ,),
-          SizedBox(height: 60,),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextWidget(text: 'Sign up', textSize: 20, weight: FontWeight.w700,textcolor: ToDoAppcolors.PrimaryColor1,),
-        ),
-          SizedBox(height: 20,),
-          Row(children: [
-            Icon(Icons.perm_identity,),
-            SizedBox(width: 10,),
-            TextWidget(text: 'Your user name', textSize: 12, weight: FontWeight.w200,textcolor: ToDoAppcolors.PrimaryColor2,)
-          ],),
-          SizedBox(height: 30,),
-
-          Row(children: [
-            Icon(Icons.mail_outline_outlined,),
-            SizedBox(width: 10,),
-            TextWidget(text: 'Your Email', textSize: 12, weight: FontWeight.w200,textcolor: ToDoAppcolors.PrimaryColor2,)
-          ],),
-          SizedBox(height: 30,),
-          Row(children: [
-            Icon(Icons.lock_outline,),
-            SizedBox(width: 10,),
-            TextWidget(text: 'Password', textSize: 12, weight: FontWeight.w200,textcolor: ToDoAppcolors.PrimaryColor2,)
-          ],),
-          PasswordTextformfeildWidget(
-            text: '',
-            preicon: Icons.lock,
-            iconcolor: ToDoAppcolors.PrimaryColor1, N_controller: passwordcontroller,
-            posticon: Icons.visibility,
-            tap: (){},
+      body:SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+          SizedBox(height: 50,),
+          Center(child:
+            TextWidget(text: 'Create Account', textSize: 25, weight: FontWeight.bold,)
+            ,),
+            SizedBox(height: 50,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width: 5,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextWidget(
+                  text: 'Sign up',
+                  textSize: 20,
+                  weight: FontWeight.w700,
+                  textcolor: ToDoAppcolors.PrimaryColor1,
+                ),
+              ),
+            ],
           ),
-          CoustomButton(Navigate_to: (){}, sign_text: 'Sign up'),
+            SizedBox(height: 20,),
+            Row(children: [
+              SizedBox(width: 10,),
+              Icon(Icons.perm_identity,size: 17,),
+              SizedBox(width: 10,),
+              TextWidget(text: 'Your user name',
+                textSize: 12,
+                weight: FontWeight.w400,
+                textcolor: ToDoAppcolors.PrimaryColor2,)
+            ],),
+            SizedBox(height: 7,),
+            CoustomTextformfeildAuth(
+              text: 'Enter your Name',
+              N_controller: nameController,
+            ),
+
+            SizedBox(height: 25,),
+
+            Row(children: [
+              SizedBox(width: 10,),
+              Icon(Icons.mail_outline_outlined,size: 17,),
+
+              SizedBox(width: 10,),
+
+              TextWidget(
+                text: 'Your Email',
+                textSize: 12,
+                weight: FontWeight.w400,
+                textcolor: ToDoAppcolors.PrimaryColor2,
+              )
+
+            ],),
+            SizedBox(height: 7,),
+
+            CoustomTextformfeildAuth(
+              text: 'Enter your Email Address',
+              N_controller: emailcontroller,
+            ),
+
+            SizedBox(height: 25,),
+            Row(children: [
+              SizedBox(width: 10,),
+              Icon(Icons.lock_outline,size: 17,),
+              SizedBox(width: 10,),
+
+              TextWidget(
+                text: 'Password',
+                textSize: 12,
+                weight: FontWeight.w300,
+                textcolor: ToDoAppcolors.PrimaryColor2,
+              )
+            ],),
+            SizedBox(height: 7,),
+            PasswordTextformfeildWidget(
+              text: 'Enter your password',
+              iconcolor: ToDoAppcolors.PrimaryColor2, N_controller: passwordcontroller,
+              posticon: Icons.visibility,
+              tap: (){},
+            ),
+            SizedBox(height: 50,),
+            CoustomButton(Navigate_to: ()
+
+            async
+            {
+              String Primarykey=DateTime.now().microsecond.toString();
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                  email: emailcontroller.text,
+                  password: passwordcontroller.text
+              ).then((onValue) async{
+                await FirebaseFirestore.instance.collection('User name').
+                doc(Primarykey).
+                set(
+                    {
+                      'Name':nameController.text,
+                      'id':Primarykey,
+                    });
+              })
+                  .onError((error, handleError) {
+
+              });
+            }
+                , sign_text: 'Sign up'),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+              SizedBox(width: 100,),
+              Text('Already a user?',style: GoogleFonts.roboto(color: ToDoAppcolors.PrimaryColor2,fontSize: 13),),
+               TextButton(onPressed: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>SignIn()));
+
+               }, child: TextWidget(text: 'Sign in', textSize: 13, weight: FontWeight.w400,textcolor: ToDoAppcolors.PrimaryColor1,))
+            ],),
+
+            TextWidget(text: 'OR', textSize: 20, weight: FontWeight.bold),
+            Divider(thickness: 1,),
+           Center(child: Image.asset(images.SocialLogin),),
 
 
-      ],),
+        ],),
+      ),
     );
   }
 }

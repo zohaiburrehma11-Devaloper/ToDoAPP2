@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/firebase_options.dart';
 import 'package:todoapp/sir_lectures_practice/insert_data.dart';
+import 'package:todoapp/veiws/source/auth_veiws/sign_up.dart';
 
 void main()
 async
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: InsertData(),
+      home: SignUp(),
     );
   }
 }
