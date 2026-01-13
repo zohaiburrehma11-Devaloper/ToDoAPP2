@@ -9,6 +9,8 @@ import 'package:todoapp/veiws/utills/constants/colors.dart';
 import 'package:todoapp/veiws/utills/constants/images.dart';
 import '../../components/coustom_textformfeild_auth.dart';
 import '../../components/password_textformfeild_auth.dart';
+import '../app_veiw/home_screen.dart';
+import '../starting_veiws/onboarding_screen.dart';
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -112,20 +114,30 @@ class _SignUpState extends State<SignUp> {
 
             async
             {
-              String Primarykey=DateTime.now().microsecond.toString();
+
               await FirebaseAuth.instance.createUserWithEmailAndPassword(
                   email: emailcontroller.text,
                   password: passwordcontroller.text
               ).then((onValue) async{
+                String uid= onValue.user!.uid;
                 await FirebaseFirestore.instance.collection('User name').
-                doc(Primarykey).
+                doc(uid).
                 set(
                     {
                       'Name':nameController.text,
-                      'id':Primarykey,
+                      'id':uid,
                     });
-              })
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+              }
+              )
                   .onError((error, handleError) {
+                 ScaffoldMessenger.of(context).showSnackBar(
+
+                 SnackBar(
+                   behavior: SnackBarBehavior.floating,
+                   backgroundColor: ToDoAppcolors.PrimaryColor2,
+                     content: TextWidget(text: error.toString(), textSize: 12, weight:FontWeight.w500,textcolor: ToDoAppcolors.Default,))
+                 );
 
               });
             }
