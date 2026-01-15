@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:todoapp/firebase_options.dart';
 import 'package:todoapp/sir_lectures_practice/insert_data.dart';
 import 'package:todoapp/veiws/source/app_veiw/add_task_screen_1.dart';
+import 'package:todoapp/veiws/source/app_veiw/home_screen.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_up.dart';
+import 'package:todoapp/veiws/source/starting_veiws/splash_screen.dart';
 
 void main()
 async
@@ -27,7 +29,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AddTaskScreen1(),
+      home: SplashScreen(),
     );
   }
 }

@@ -119,13 +119,15 @@ class _SignUpState extends State<SignUp> {
                   email: emailcontroller.text,
                   password: passwordcontroller.text
               ).then((onValue) async{
-                String uid= onValue.user!.uid;
+                String uid= FirebaseAuth.instance.currentUser!.uid.toString();
                 await FirebaseFirestore.instance.collection('User name').
                 doc(uid).
                 set(
                     {
                       'Name':nameController.text,
                       'id':uid,
+                      'Email':emailcontroller.text,
+                      'Password':passwordcontroller.text,
                     });
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
               }
