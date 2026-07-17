@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeSreen extends StatefulWidget {
@@ -6,26 +8,97 @@ class HomeSreen extends StatefulWidget {
   @override
   State<HomeSreen> createState() => _HomeSreenState();
 }
-
+String docid=FirebaseAuth.instance.currentUser!.uid;
 class _HomeSreenState extends State<HomeSreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(items:[] ),
-      body: Column(
-        children: [
-           ListTile(
 
-             title: Text('tetx'),
-           ),
-        ],
-      ),
+
+
+      body: StreamBuilder<DocumentSnapshot>(
+          stream:
+                FirebaseFirestore.
+          instance.
+          collection('user-data').
+          doc(docid).
+          snapshots() ,
+          builder: (context,snapshot){
+           var data= snapshot.data!.data() as Map<String, dynamic>  ;
+        return ListTile(
+          title: Text(data['name']),
+          subtitle: Text(data['email']),
+        );
+    })
     );
   }
 }
 
 
+/*
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
+class UserDataScreen extends StatelessWidget {
+  const UserDataScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("User Data"),
+      ),
+
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("Signindata")
+            .doc(uid) // User ID as Document ID
+            .collection("Userdata") // Sub Collection
+            .snapshots(),
+
+        builder: (context, snapshot) {
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text("No Data Found"),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+
+              var data = snapshot.data!.docs[index];
+
+              return Card(
+                child: ListTile(
+                  title: Text(data["title"]),
+                  subtitle: Text(data["description"]),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}* */
 
 
 

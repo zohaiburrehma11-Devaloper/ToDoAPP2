@@ -66,7 +66,7 @@ class _SignUpState extends State<SignUp> {
         SizedBox(height: 40,),
             Center(
                 child:InkWell(
-                  onTap: ()async{
+                  onTap: (){
                     //--authentication ------------
                     //. then((value){
 
@@ -75,8 +75,15 @@ class _SignUpState extends State<SignUp> {
                     createUserWithEmailAndPassword(
                         email: emailcontroller.text.trim(),
                         password: passwordcontroller.text.trim()
-                    ).then((value){
-                      ScaffoldMessenger.of(context).showSnackBar(
+                    ).then((value)
+                    async{
+
+                      String docid=FirebaseAuth.instance.currentUser!.uid;
+                      await FirebaseFirestore.instance.collection('user-data').doc(docid).set({
+                        'name':namecontroller.text,
+                        'email':emailcontroller.text,
+
+                      });                      ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text(' Login SucessFully'))
                       );
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeSreen()));
@@ -86,10 +93,8 @@ class _SignUpState extends State<SignUp> {
                            SnackBar(content: Text(" Error Try Again or check Internet:${error.toString()}"))
                       );
                     });
-                    // String docid=FirebaseAuth.instance.currentUser!.uid;
-                    // await FirebaseFirestore.instance.collection('user-data').doc(docid).set({
-                    //   'name':namecontroller.text.trim(),
-                    // });
+
+
 
                   },
                   /* .then((value) {
