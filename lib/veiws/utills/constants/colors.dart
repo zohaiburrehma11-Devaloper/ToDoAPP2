@@ -8,4 +8,5 @@ class ToDoAppcolors
     static Color secondarycolor1=Color(0xffFFC107);
     static Color secondarycolor2=Color(0xffFF5722);
     static Color Default=Color(0xffFFFFFF);
+    static Color PrimaryColor3=Color(0xff333333);
 }

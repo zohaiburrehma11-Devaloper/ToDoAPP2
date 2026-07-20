@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todoapp/veiws/source/app_veiw/home_screen.dart';
+import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_up.dart';
 import 'package:todoapp/veiws/source/starting_veiws/splash_screen_2.dart';
 import 'package:todoapp/veiws/utills/constants/images.dart';
@@ -15,15 +18,25 @@ class _SplashScreen_1State extends State<SplashScreen_1> {
 
   void initState(){
     super.initState();
-    Future.delayed(const Duration(seconds: 3,),
-            (){
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context){
-                return SignUp();
-          } ));
-        });
+    ISLogin();
   }
-
+   ISLogin()
+   async{
+     User? userid=await FirebaseAuth.instance.currentUser;
+    if(userid==null||userid=="")
+      {
+        Future.delayed(const Duration(seconds: 3,),
+                (){
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context){
+                return SignUp();
+              } ));
+            });
+      }
+    else{
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeSreen()));
+    }
+   }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,

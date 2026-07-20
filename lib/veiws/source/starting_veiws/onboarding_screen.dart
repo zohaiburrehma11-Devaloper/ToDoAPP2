@@ -1,37 +1,37 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:todoapp/veiws/components/text_widget.dart';
@@ -57,7 +57,7 @@
 //           Padding(
 //             padding: const EdgeInsets.only(left:  20.0),
 //             child: Center(
-//               child:TextWidget(text: 'Simplify, Organize, and            ', textSize: 23, weight: FontWeight.bold)
+//               child:TextWidget1(text: 'Simplify, Organize, and            ', size: 23, weight: FontWeight.bold, color: ToDoAppcolors.PrimaryColor3,)
 //             ),
 //           ),
 //
@@ -65,8 +65,8 @@
 //             TextSpan( text: '   Conquer  ',style: GoogleFonts.roboto(fontSize: 30,color: ToDoAppcolors.PrimaryColor2,fontWeight: FontWeight.bold)),
 //             TextSpan(text: ' Your Day',style: GoogleFonts.roboto(color: ToDoAppcolors.PrimaryColor1,fontSize: 30,fontWeight: FontWeight.bold))
 //           ])),
-//           Center(child: TextWidget(text: '     Take control of your task and  ', textSize: 15, weight: FontWeight.w300,textcolor: Color(0xff333333),)),
-//           Center(child: TextWidget(text: '     acheive your goals.  ', textSize: 15, weight: FontWeight.w300,textcolor: Color(0xff333333),)),
+//           Center(child: TextWidget1(text: '     Take control of your task and  ', size: 15, weight: FontWeight.w300,color: ToDoAppcolors.PrimaryColor3,)),
+//           Center(child: TextWidget1(text: '     acheive your goals.  ', size: 15, weight: FontWeight.w300,color: ToDoAppcolors.PrimaryColor3,)),
 //           SizedBox(height: 23,),
 //           Center(
 //             child: InkWell(
@@ -81,7 +81,7 @@
 //                   borderRadius: BorderRadius.circular(20),
 //
 //                 ),
-//                 child: Center(child: TextWidget(text: 'Lets Start', textSize: 18, weight: FontWeight.w700,textcolor: ToDoAppcolors.Default,),),
+//                 child: Center(child: TextWidget1(text: 'Lets Start',size: 18, weight: FontWeight.w700,color: ToDoAppcolors.PrimaryColor2,),),
 //               ),
 //             ),
 //           ),

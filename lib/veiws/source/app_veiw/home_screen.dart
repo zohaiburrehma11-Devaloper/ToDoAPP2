@@ -24,11 +24,18 @@ class _HomeSreenState extends State<HomeSreen> {
           doc(docid).
           snapshots() ,
           builder: (context,snapshot){
+            if(snapshot.connectionState==ConnectionState.waiting)
+              {
+                return Center(
+                    child: CircularProgressIndicator()
+                );
+              }
            var data= snapshot.data!.data() as Map<String, dynamic>  ;
         return ListTile(
           title: Text(data['name']),
           subtitle: Text(data['email']),
         );
+
     })
     );
   }
