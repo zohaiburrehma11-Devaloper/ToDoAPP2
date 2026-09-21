@@ -1,402 +1,234 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/veiws/components/coustum_Textformfield.dart';
 import 'package:todoapp/veiws/components/text_widget.dart';
 import 'package:todoapp/veiws/source/app_veiw/home_screen.dart';
+import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
+
 import 'package:todoapp/veiws/utills/constants/colors.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+import '../../utills/constants/images.dart';
+
+class Sign_up extends StatefulWidget {
+  const Sign_up({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<Sign_up> createState() => _Sign_upState();
 }
 
-class _SignUpState extends State<SignUp> {
-  TextEditingController namecontroller=TextEditingController();
-  TextEditingController emailcontroller=TextEditingController();
-  TextEditingController passwordcontroller=TextEditingController();
+class _Sign_upState extends State<Sign_up> {
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController  namecontroller=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Padding(
-        padding: const EdgeInsets.only(left :1.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 100,),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0),
-            child: TextWidget1(text: 'UserName', color: Colors.white, size: 20, weight: FontWeight.w300),
-          ),
-          SizedBox(height: 9,),
-          CoustomTextFormFields(
-            hint: 'Enter your name',
-            n1controller: namecontroller,
-          ),
-            SizedBox(height: 20,),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: TextWidget1(text: 'Email', color: Colors.white, size: 20, weight: FontWeight.w300),
-            ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 1.0),
+          child:  Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment(100,65),
+                  colors: [
+                    ToDoAppcolors.PrimaryColor1 ,
+                    ToDoAppcolors.PrimaryColor2,
+                    ToDoAppcolors.PrimaryColor3,
+                  ]),
+            ),child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 22,),
+                Center(
+                  child: CircleAvatar(
+                    radius: 45,
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset(images.onboarding_pic_1,fit: BoxFit.cover,),
+                  ),
+                )   ,
+                SizedBox(height: 36,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 19.0),
+                  child: TextWidget1(text: 'Welcome to DO IT ', color:ToDoAppcolors.fontcolor , size: 20,weight: FontWeight.w700,),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 19.0),
+                  child: TextWidget1(text: 'create an account join us now ! ', color:ToDoAppcolors.fontcolor , size: 17,weight: FontWeight.w300,),
+                ),
+                SizedBox(height: 48,),
 
-            SizedBox(height: 9,),
+                CoustomTextFormFields(
+                  icons: Icons.person,
+                  hint: 'Name',
+                  n1controller: namecontroller,
+                ),
 
-          CoustomTextFormFields(
-              hint: 'Enter Email Address',
+                SizedBox(height: 38,),
 
-              n1controller: emailcontroller,
-          ),
+                CoustomTextFormFields(
+                  icons: Icons.email,
+                  hint: 'E-mail',
+                  n1controller: emailcontroller,
+                ),
 
-            SizedBox(height: 20,),
+                const SizedBox(height: 38,),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: TextWidget1(text: 'Password', color: Colors.white, size: 20, weight: FontWeight.w300),
-            ),
-            SizedBox(height: 9,),
-          CoustomTextFormFields(
-              hint: 'Enter your Password',
-              secure: true,
-              n1controller: passwordcontroller,
-          ),
-        SizedBox(height: 40,),
-            Center(
-                child:InkWell(
-                  onTap: (){
-                    //--authentication ------------
-                    //. then((value){
 
-                    FirebaseAuth.
-                    instance.
-                    createUserWithEmailAndPassword(
+
+
+                CoustomTextFormFields(
+                  icons: Icons.lock,
+                  hint: 'Enter your Password',
+                  secure: true,
+                  n1controller: passwordcontroller,
+                ),
+                SizedBox(height: 18,),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 190.0),
+                  child: InkWell(
+                      child: TextWidget1(
+                          text: 'forgot password?',
+                          color: ToDoAppcolors.fontcolor,
+                          size: 17)),
+                ),
+                const SizedBox(height: 33,),
+
+                // --- Login Button ---
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      // Firebase Login Logic
+                      FirebaseAuth.instance.createUserWithEmailAndPassword(
                         email: emailcontroller.text.trim(),
-                        password: passwordcontroller.text.trim()
-                    ).then((value)
-                    async{
-
-                      String docid=FirebaseAuth.instance.currentUser!.uid;
-                      await FirebaseFirestore.instance.collection('user-data').doc(docid).set({
-                        'name':namecontroller.text,
-                        'email':emailcontroller.text,
-
-                      });                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text(' Login SucessFully'))
-                      );
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeSreen()));
-                    }).onError((error,handleError){
-                      print(error);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(content: Text(" Error Try Again or check Internet:${error.toString()}"))
-                      );
-                    });
+                        password: passwordcontroller.text.trim(),
+                      ).then((value)async {
 
 
+                          // Firebase Authentication se current user ki UID
+                          String uid = FirebaseAuth.instance.currentUser!.uid;
 
-                  },
-                  /* .then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Data inserted successfully"),
-          backgroundColor: Colors.green,
-        ),
-      );
-    }).onError((error, stackTrace) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.toString()),
-          backgroundColor: Colors.red,
-        ),
-      );
-    });
-                  *
-                  *  */
-                  child:
-                  Container(
-                    height:58 ,
-                    width: 380,
-                    decoration: BoxDecoration(
-                      color: ToDoAppcolors.PrimaryColor2,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child:
-                    Center(child:
-                    TextWidget1(
-                      text: 'Register', color: ToDoAppcolors.PrimaryColor1, size: 19,
-                    ),
+                          // Firestore mein user ka data save
+                          await FirebaseFirestore.instance
+                              .collection('Signindata')
+                              .doc(uid)
+                              .set({
+                            'User ID': uid,
+                            'Name': namecontroller.text.trim(),
+                            'Email': emailcontroller.text.trim(),
+                          });
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Sign up Successfully'),
+                            ),
+                          );
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeSreen(),
+                            ),
+                          );
+
+                        // Success SnackBar
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Sign up Successfully'))
+                        );
+                        // Navigate to Home Screen
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const HomeSreen())
+                        );
+                      }).onError((error, handleError) {
+                        // Error Handling
+                        print(error);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error: ${error.toString()}"))
+                        );
+                      });
+                    },
+                    child: Container (
+                      height: 44,
+                      width: 320,
+                      decoration: BoxDecoration(
+                        color: ToDoAppcolors.signcolor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: TextWidget1(
+                          text: 'Sign Up',
+                          color: ToDoAppcolors.fontcolor,
+                          size: 19,
+                        ),
+                      ),
+                    )       ,
+                  ),
+                ),
+
+                const SizedBox(height: 22,),
+
+                // --- "Or" Divider Line ---
+
+
+                // --- Don't have an account? Sign Up ---
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      // Yahan se user SignUp screen par ja sakta hai
+                      Navigator.pop(context); // Agar aap pehle SignUp se aaye hain
+                      // Agar direct open kiya hai to niche wali line un-comment karein:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen() ));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextWidget1(text: "Already have an account? ", color: Colors.white, size: 15),
+                        TextWidget1(text: "Sign in", color: ToDoAppcolors.signcolor, size: 15, weight: FontWeight.bold),
+                      ],
                     ),
                   ),
-                )
-
-              ),
-
-            SizedBox(height: 25,),
-
-            Center(
-
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-
-                Container(
-                  height: 1,
-                  width: 160,
-                  color: Colors.white,
                 ),
-                TextWidget1(text: 'Or', color: ToDoAppcolors.PrimaryColor1, size: 18),
-                Container(
-                  height: 1,
-                  width: 160,
-                  color: Colors.white,
-                ),
-              ],),
-            ),//line After Login or Signup
 
 
+                SizedBox(height: 50,),
 
+                Row(children: [
+                  SizedBox(
+                    width: 55,
+                  ),
+                  TextWidget1(text: 'Sign in with:', color: ToDoAppcolors.fontcolor, size: 15),
+                  SizedBox(width: 14,),
+                  Container(height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white70,
+                    ),
+                    child: Icon(Icons.apple,color: Colors.black45,),
+                  ),
+                  SizedBox(width: 15,),
+                  Container(height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white70,
+                    ),
+                    child: Icon(Icons.g_mobiledata_sharp,color: Colors.deepOrangeAccent,),
+                  ),
 
-
-
-        ],),
-      ),
-    );
+                ],)
+              ],
+                        ),
+            ),
+          ),
+        ));
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:todoapp/veiws/components/coustom_button.dart';
-// import 'package:todoapp/veiws/components/text_widget.dart';
-// import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
-// import 'package:todoapp/veiws/utills/constants/colors.dart';
-// import 'package:todoapp/veiws/utills/constants/images.dart';
-// import '../../components/coustom_textformfeild_auth.dart';
-// import '../../components/password_textformfeild_auth.dart';
-// import '../app_veiw/home_screen.dart';
-// import '../starting_veiws/onboarding_screen.dart';
-// class SignUp extends StatefulWidget {
-//   const SignUp({super.key});
-//
-//   @override
-//   State<SignUp> createState() => _SignUpState();
-// }
-//
-// class _SignUpState extends State<SignUp> {
-//   TextEditingController emailcontroller=TextEditingController();
-//   TextEditingController passwordcontroller=TextEditingController();
-//   TextEditingController nameController=TextEditingController();
-//   TextEditingController genderController=TextEditingController();
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body:SingleChildScrollView(
-//         scrollDirection: Axis.vertical,
-//         child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//           SizedBox(height: 50,),
-//           Center(child:
-//             TextWidget(text: 'Create Account', textSize: 25, weight: FontWeight.bold,)
-//             ,),
-//             SizedBox(height: 50,),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.start,
-//             children: [
-//               SizedBox(width: 5,),
-//               Padding(
-//                 padding: const EdgeInsets.all(8.0),
-//                 child: TextWidget(
-//                   text: 'Sign up',
-//                   textSize: 20,
-//                   weight: FontWeight.w700,
-//                   textcolor: ToDoAppcolors.PrimaryColor1,
-//                 ),
-//               ),
-//             ],
-//           ),
-//             SizedBox(height: 20,),
-//             Row(children: [
-//               SizedBox(width: 10,),
-//               Icon(Icons.perm_identity,size: 17,),
-//               SizedBox(width: 10,),
-//               TextWidget(text: 'Your user name',
-//                 textSize: 12,
-//                 weight: FontWeight.w400,
-//                 textcolor: ToDoAppcolors.PrimaryColor2,)
-//             ],),
-//             SizedBox(height: 7,),
-//             CoustomTextformfeildAuth(
-//               text: 'Enter your Name',
-//               N_controller: nameController,
-//             ),
-//
-//             SizedBox(height: 25,),
-//
-//             Row(children: [
-//               SizedBox(width: 10,),
-//               Icon(Icons.mail_outline_outlined,size: 17,),
-//
-//               SizedBox(width: 10,),
-//
-//               TextWidget(
-//                 text: 'Your Email',
-//                 textSize: 12,
-//                 weight: FontWeight.w400,
-//                 textcolor: ToDoAppcolors.PrimaryColor2,
-//               )
-//
-//             ],),
-//             SizedBox(height: 7,),
-//
-//             CoustomTextformfeildAuth(
-//               text: 'Enter your Email Address',
-//               N_controller: emailcontroller,
-//             ),
-//
-//             SizedBox(height: 25,),
-//             Row(children: [
-//               SizedBox(width: 10,),
-//               Icon(Icons.lock_outline,size: 17,),
-//               SizedBox(width: 10,),
-//
-//               TextWidget(
-//                 text: 'Password',
-//                 textSize: 12,
-//                 weight: FontWeight.w300,
-//                 textcolor: ToDoAppcolors.PrimaryColor2,
-//               )
-//             ],),
-//             SizedBox(height: 7,),
-//             PasswordTextformfeildWidget(
-//               text: 'Enter your password',
-//               iconcolor: ToDoAppcolors.PrimaryColor2, N_controller: passwordcontroller,
-//               posticon: Icons.visibility,
-//               tap: (){},
-//             ),
-//             SizedBox(height: 30,),
-//
-//             CoustomTextformfeildAuth(text: 'Enter your gender', N_controller:genderController ),
-//
-//             SizedBox(height: 50,),
-//             CoustomButton(Navigate_to: ()
-//
-//             async
-//             {
-//
-//               await FirebaseAuth.instance.createUserWithEmailAndPassword(
-//                   email: emailcontroller.text,
-//                   password: passwordcontroller.text
-//               ).then((onValue) async{
-//                 final uid= FirebaseAuth.instance.currentUser!.uid;
-//                 await FirebaseFirestore.instance.collection('Signindata').
-//                 doc(uid).
-//                 set(
-//                     {
-//                       'Name':nameController.text,
-//                       'id':uid,
-//                       'Email':emailcontroller.text,
-//                       'Password':passwordcontroller.text,
-//                       'Gender':genderController.text,
-//
-//                     });
-//                 emailcontroller.clear();
-//                 passwordcontroller.clear();
-//                 Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
-//               }
-//               )
-//                   .onError((error, handleError) {
-//                  ScaffoldMessenger.of(context).showSnackBar(
-//
-//                  SnackBar(
-//                    behavior: SnackBarBehavior.floating,
-//                    backgroundColor: ToDoAppcolors.PrimaryColor2,
-//                      content: TextWidget(text: error.toString(), textSize: 12, weight:FontWeight.w500,textcolor: ToDoAppcolors.Default,))
-//                  );
-//
-//               });
-//             }
-//                 , sign_text: 'Sign up'),
-//
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.end,
-//               children: [
-//               SizedBox(width: 100,),
-//               Text('Already a user?',style: GoogleFonts.roboto(color: ToDoAppcolors.PrimaryColor2,fontSize: 13),),
-//                TextButton(onPressed: (){
-//                  Navigator.push(context, MaterialPageRoute(builder: (context)=>SignIn()));
-//
-//                }, child: TextWidget(text: 'Sign in', textSize: 13, weight: FontWeight.w400,textcolor: ToDoAppcolors.PrimaryColor1,))
-//             ],),
-//
-//             TextWidget(text: 'OR', textSize: 20, weight: FontWeight.bold),
-//             Divider(thickness: 1,),
-//            Center(child: Image.asset(images.SocialLogin),),
-//
-//
-//         ],),
-//       ),
-//     );
-//   }
-// }

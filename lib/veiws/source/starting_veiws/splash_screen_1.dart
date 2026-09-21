@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todoapp/veiws/components/text_widget.dart';
 import 'package:todoapp/veiws/source/app_veiw/home_screen.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_up.dart';
 import 'package:todoapp/veiws/source/starting_veiws/splash_screen_2.dart';
+import 'package:todoapp/veiws/utills/constants/colors.dart';
 import 'package:todoapp/veiws/utills/constants/images.dart';
 
 class SplashScreen_1 extends StatefulWidget {
@@ -25,11 +27,11 @@ class _SplashScreen_1State extends State<SplashScreen_1> {
      User? userid=await FirebaseAuth.instance.currentUser;
     if(userid==null||userid=="")
       {
-        Future.delayed(const Duration(seconds: 3,),
+        Future.delayed(const Duration(seconds: 13,),
                 (){
               Navigator.push(
                   context, MaterialPageRoute(builder: (context){
-                return SignUp();
+                return SplashScreen2();
               } ));
             });
       }
@@ -39,32 +41,44 @@ class _SplashScreen_1State extends State<SplashScreen_1> {
    }
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 316.0,left:117),
-            child: Container(
-              height: 170,
-              width: 140,
-              decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage('Todo_Images/onboarding_image/Splash-1.png'))
-              ),
 
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+
+          gradient: LinearGradient(
+            begin: Alignment(100,65),
+              colors: [
+                ToDoAppcolors.PrimaryColor1,
+            ToDoAppcolors.PrimaryColor2,
+            ToDoAppcolors.PrimaryColor3,
+          ])
+        ),
+        child: Column(
+          children: [
+            SizedBox(height: 200,),
+           Center(
+             child: CircleAvatar(
+               radius: 45,
+               backgroundColor: Colors.transparent,
+               child: Image.asset(images.onboarding_pic_1,fit: BoxFit.cover,),
+             ),
+           )   ,
+            SizedBox(height: 50,),
+            TextWidget1(
+                text: 'TO DO',
+                color: ToDoAppcolors.fontcolor,
+                size: 20,
+              weight: FontWeight.bold,
             ),
-          ),
-          SizedBox(height: 220,),
-          Padding(
-            padding: const EdgeInsets.only(left: 90.0),
-            child: Container(
-              height: 5,
-              width: 134,
-              color: Colors.white,
-            ),
-          )
+           SizedBox(height: 200,),
 
+            Center(child:
+              TextWidget1(text: 'v :1.0.0', color: ToDoAppcolors.fontcolor, size: 18),)
 
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todoapp/veiws/components/text_widget.dart';
+import 'package:todoapp/veiws/source/app_veiw/add_task_screen1.dart';
+import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
+import 'package:todoapp/veiws/utills/constants/colors.dart';
+import 'package:todoapp/veiws/utills/constants/images.dart';
 
 class HomeSreen extends StatefulWidget {
   const HomeSreen({super.key});
@@ -9,37 +14,307 @@ class HomeSreen extends StatefulWidget {
   State<HomeSreen> createState() => _HomeSreenState();
 }
 String docid=FirebaseAuth.instance.currentUser!.uid;
+
 class _HomeSreenState extends State<HomeSreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       floatingActionButton: FloatingActionButton(onPressed: ()
+       {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddTaskScreen1()));
+       },
+         child: Container(
+           decoration: BoxDecoration(
+             borderRadius: BorderRadius.circular(13),
+                 color: ToDoAppcolors.PrimaryColor4,
+           ),
+           child:Icon(Icons.add,color: ToDoAppcolors.fontcolor,),
+         ),
+       ),
 
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
 
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment(100,65),
+              colors: [
+                ToDoAppcolors.PrimaryColor1 ,
+                ToDoAppcolors.PrimaryColor2,
+                ToDoAppcolors.PrimaryColor3,
+              ]),
+        ),
 
-      body: StreamBuilder<DocumentSnapshot>(
-          stream:
-                FirebaseFirestore.
-          instance.
-          collection('user-data').
-          doc(docid).
-          snapshots() ,
-          builder: (context,snapshot){
-            if(snapshot.connectionState==ConnectionState.waiting)
-              {
-                return Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+
+            children: [
+               SizedBox(height: 40,),
+
+              SizedBox(
+                 height: 100,
+                child: StreamBuilder<DocumentSnapshot<Map<String,dynamic>>>(
+                    stream:
+                          FirebaseFirestore.
+                    instance.
+                    collection('Signindata').
+                    doc(docid).
+                    snapshots() ,
+                    builder: (context,snapshot){
+                      if(snapshot.connectionState==ConnectionState.waiting)
+                        {
+                          return Center(
+                              child: CircularProgressIndicator()
+                          );
+                        }
+                      if(snapshot.hasError )
+                        {
+                           ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(" Error occur"))
+                                          );}
+                      if(!snapshot.hasData||!snapshot.data!.exists)
+                        {
+                         return Center(
+                           child: TextWidget1(text: 'User data not found', color: ToDoAppcolors.fontcolor, size: 30),
+                         );
+                      }
+                     var data= snapshot.data!.data() as Map<String, dynamic>  ;
+                  return ListTile(
+                    leading: CircleAvatar(
+                      radius:40 ,
+                      backgroundImage:AssetImage(images.Profile_pic_1,), 
+                    ),
+                    title: TextWidget1(text: data['Name'], color: ToDoAppcolors.fontcolor, size: 15),
+                   subtitle: TextWidget1(text: data['Email'], color: ToDoAppcolors.fontcolor, size: 12),
+                    trailing:   IconButton(onPressed: (){
+
+                    }, icon: Icon(Icons.notifications,color: ToDoAppcolors.fontcolor,)),
+                    );
+                    }),
+              ),
+              SizedBox(height: 25,),
+              SizedBox(
+                height: 250,
+                child:StreamBuilder<QuerySnapshot>(
+
+                    stream:  FirebaseFirestore
+                        .instance
+                        .collection('user-data')
+                        .doc(docid)
+                        .collection('Task_data').
+                    where('Status',isEqualTo: 'incomplete').
+                    snapshots(),
+                    builder: (context,snapshot)
+                    {
+
+                    if(snapshot.connectionState==ConnectionState.waiting)
+                    {
+                    return Center(
                     child: CircularProgressIndicator()
-                );
-              }
-           var data= snapshot.data!.data() as Map<String, dynamic>  ;
-        return ListTile(
-          title: Text(data['name']),
-          subtitle: Text(data['email']),
-        );
+                    );
+                    }
+                    if(snapshot.hasError ) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(" Error occur"))
+                      );
 
-    })
+                    }
+                    if (!snapshot.hasData ) {
+                      return const Center(
+                        child: Text("Document not found"),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+           // ✅ Do
+                        var data = snapshot.data!.docs[index].data()
+                        as Map<String, dynamic>;
+                        String taskid = snapshot.data!.docs[index].id;
+                        return ListTile(
+                          leading: TextWidget1(text: data['Status'],
+                              color:data['Status']=='incomplete'?ToDoAppcolors.fontcolor:ToDoAppcolors.PrimaryColor4,
+                              size: 18
+                          ),
+                          onTap:
+                          data['Status']=="incomplete"?
+                          ()
+
+                        async{
+                            await FirebaseFirestore.
+                            instance.
+                            collection('user-data').
+                            doc(FirebaseAuth.instance.currentUser!.uid).
+                            collection('Task_data').
+                            doc( taskid).
+                            update(
+
+                                {
+                                  'Status':'completed',
+                                });
+                          }:null,
+                          trailing: InkWell(
+                            onTap: ()async{
+                              await FirebaseFirestore.instance.
+                              collection('user-data').
+                              doc(docid).
+                              collection('Task_data').
+                              doc( snapshot.data!.docs[index].id).
+                              delete();
+                            },
+                            child: Icon(Icons.delete_forever,color: ToDoAppcolors.PrimaryColor2,),
+                          ),
+                          title: TextWidget1(
+                            text: data['Title']?.toString() ?? "",   // ✅ Highlight
+                            color: ToDoAppcolors.fontcolor,
+                            size: 18,
+                          ),
+                          subtitle: TextWidget1(
+                            text: data['Task']?.toString() ?? "",// ✅ Highlight
+                            color: ToDoAppcolors.fontcolor,
+                            size: 18,
+                          ),
+                        );
+                      },
+                    );
+                    }),
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                height:250,
+                child:StreamBuilder<QuerySnapshot>(
+
+                    stream:  FirebaseFirestore
+                        .instance
+                        .collection('user-data')
+                        .doc(docid)
+                        .collection('Task_data').
+                    where('Status',isEqualTo: 'completed').
+                    snapshots(),
+                    builder: (context,snapshot)
+                    {
+
+                    if(snapshot.connectionState==ConnectionState.waiting)
+                    {
+                    return Center(
+                    child: CircularProgressIndicator()
+                    );
+                    }
+                    if(snapshot.hasError ) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(" Error occur"))
+                      );
+
+                    }
+                    if (!snapshot.hasData ) {
+                      return const Center(
+                        child: Text("Document not found"),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+           // ✅ Do
+                        var data = snapshot.data!.docs[index].data()
+                        as Map<String, dynamic>;
+                        String taskid = snapshot.data!.docs[index].id;
+                        return ListTile(
+                          leading: TextWidget1(text: data['Status'],
+                              color:data['Status']=='incomplete'?ToDoAppcolors.fontcolor:ToDoAppcolors.PrimaryColor4,
+                              size: 18
+                          ),
+                          onTap:
+                          data['Status']=="incomplete"?
+                          ()
+
+                        async{
+                            await FirebaseFirestore.
+                            instance.
+                            collection('user-data').
+                            doc(FirebaseAuth.instance.currentUser!.uid).
+                            collection('Task_data').
+                            doc( taskid).
+                            update(
+
+                                {
+                                  'Status':'completed',
+                                });
+                          }:null,
+                          trailing: InkWell(
+                            onTap: ()async{
+                              await FirebaseFirestore.instance.
+                              collection('user-data').
+                              doc(docid).
+                              collection('Task_data').
+                              doc( snapshot.data!.docs[index].id).
+                              delete();
+                            },
+                            child: Icon(Icons.delete_forever,color: ToDoAppcolors.PrimaryColor2,),
+                          ),
+                          title: TextWidget1(
+                            text: data['Title']?.toString() ?? "",   // ✅ Highlight
+                            color: ToDoAppcolors.fontcolor,
+                            size: 18,
+                          ),
+                          subtitle: TextWidget1(
+                            text: data['Task']?.toString() ?? "",// ✅ Highlight
+                            color: ToDoAppcolors.fontcolor,
+                            size: 18,
+                          ),
+                        );
+                      },
+                    );
+                    }),
+              ),
+            ],
+          ),
+        ),
+      )
     );
   }
 }
+
+// Logout Code
+// InkWell(
+//     onTap: ()
+//     async{
+//     await FirebaseAuth.instance.signOut().then((onValue){
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(
+//             content:
+//             TextWidget1(
+//                 text: "you are Log outed",
+//                 color: ToDoAppcolors.fontcolor,
+//                 size: 20)
+//         )
+//       );
+//       Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+//     });
+//     },
+//     child: Icon(Icons.logout,color: Colors.deepPurpleAccent,)),
+// TextWidget1(text: 'Logout', color: Colors.deepPurpleAccent, size: 18)
+/*
+* ListTile(
+
+
+                title: TextWidget1(
+                  text:   'Zohaib'
+                  , color: Colors.deepPurpleAccent,
+                  size: 18,
+                  weight: FontWeight.bold,
+
+                ),
+                subtitle: TextWidget1(
+                  text:   'TODO APP'
+                  , color: Colors.deepPurpleAccent,
+                  size: 18,
+                  weight: FontWeight.bold,
+
+                ),
+
+              ),*/
 
 
 /*
