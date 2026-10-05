@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/veiws/components/text_widget.dart';
 import 'package:todoapp/veiws/source/app_veiw/add_task_screen1.dart';
-import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 import 'package:todoapp/veiws/utills/constants/colors.dart';
 import 'package:todoapp/veiws/utills/constants/images.dart';
 
