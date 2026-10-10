@@ -93,7 +93,21 @@ class _HomeSreenState extends State<HomeSreen> {
                     );
                     }),
               ),
-              SizedBox(height: 25,),
+              SizedBox(height: 10,),
+
+              Padding(
+                padding: const EdgeInsets.only(right: 200.0),
+                child: TextWidget1(text: 'Group tasks', color: ToDoAppcolors.fontcolor, size: 23),
+              ),
+               SizedBox(height: 10,),
+                  
+
+              SizedBox(height: 100,),
+
+               Padding(
+                 padding: const EdgeInsets.only(right: 170.0),
+                 child: TextWidget1(text: 'Incomplete Tasks', color: ToDoAppcolors.fontcolor, size: 20),
+               ),
               SizedBox(
                 height: 250,
                 child:StreamBuilder<QuerySnapshot>(
@@ -132,55 +146,63 @@ class _HomeSreenState extends State<HomeSreen> {
                         var data = snapshot.data!.docs[index].data()
                         as Map<String, dynamic>;
                         String taskid = snapshot.data!.docs[index].id;
-                        return ListTile(
-                          leading: TextWidget1(text: data['Status'],
-                              color:data['Status']=='incomplete'?ToDoAppcolors.fontcolor:ToDoAppcolors.PrimaryColor4,
-                              size: 18
-                          ),
-                          onTap:
-                          data['Status']=="incomplete"?
-                          ()
+                        return Container(
+                            height: 50,
+                            width: 375,
+                            decoration: BoxDecoration(
+                              color: ToDoAppcolors.fontcolor,
 
-                        async{
-                            await FirebaseFirestore.
-                            instance.
-                            collection('user-data').
-                            doc(FirebaseAuth.instance.currentUser!.uid).
-                            collection('Task_data').
-                            doc( taskid).
-                            update(
+                            ),
+                            child:ListTile(
 
-                                {
-                                  'Status':'completed',
-                                });
-                          }:null,
-                          trailing: InkWell(
-                            onTap: ()async{
-                              await FirebaseFirestore.instance.
-                              collection('user-data').
-                              doc(docid).
-                              collection('Task_data').
-                              doc( snapshot.data!.docs[index].id).
-                              delete();
-                            },
-                            child: Icon(Icons.delete_forever,color: ToDoAppcolors.PrimaryColor2,),
-                          ),
-                          title: TextWidget1(
-                            text: data['Title']?.toString() ?? "",   // ✅ Highlight
-                            color: ToDoAppcolors.fontcolor,
-                            size: 18,
-                          ),
-                          subtitle: TextWidget1(
-                            text: data['Task']?.toString() ?? "",// ✅ Highlight
-                            color: ToDoAppcolors.fontcolor,
-                            size: 18,
-                          ),
+                              onTap:
+                              data['Status']=="incomplete"?
+                                  ()
+
+                              async{
+                                await FirebaseFirestore.
+                                instance.
+                                collection('user-data').
+                                doc(FirebaseAuth.instance.currentUser!.uid).
+                                collection('Task_data').
+                                doc( taskid).
+                                update(
+
+                                    {
+                                      'Status':'completed',
+                                    });
+                              }:null,
+                              trailing: InkWell(
+                                onTap: ()async{
+                                  await FirebaseFirestore.instance.
+                                  collection('user-data').
+                                  doc(docid).
+                                  collection('Task_data').
+                                  doc( snapshot.data!.docs[index].id).
+                                  delete();
+                                },
+                                child: Icon(Icons.delete_forever,color: ToDoAppcolors.PrimaryColor2,),
+                              ),
+                              title: TextWidget1(
+                                text: data['Title']?.toString() ?? "",   // ✅ Highlight
+                                color: ToDoAppcolors.fontcolor,
+                                size: 18,
+                              ),
+                              subtitle: TextWidget1(
+                                text: data['Task']?.toString() ?? "",// ✅ Highlight
+                                color: ToDoAppcolors.fontcolor,
+                                size: 18,
+                              ),
+                            )
                         );
                       },
                     );
                     }),
               ),
-              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(right:170.0),
+                child: TextWidget1(text: 'Completed Tasks', color: ToDoAppcolors.fontcolor, size: 20),
+              ),
               SizedBox(
                 height:250,
                 child:StreamBuilder<QuerySnapshot>(
@@ -220,10 +242,12 @@ class _HomeSreenState extends State<HomeSreen> {
                         as Map<String, dynamic>;
                         String taskid = snapshot.data!.docs[index].id;
                         return ListTile(
-                          leading: TextWidget1(text: data['Status'],
-                              color:data['Status']=='incomplete'?ToDoAppcolors.fontcolor:ToDoAppcolors.PrimaryColor4,
-                              size: 18
-                          ),
+                          leading:
+                          data['Status']=='completed'
+                              ?Icon(Icons.check_circle,color: ToDoAppcolors.iconcolor1,)
+                              :SizedBox.shrink(),
+
+
                           onTap:
                           data['Status']=="incomplete"?
                           ()
@@ -270,7 +294,9 @@ class _HomeSreenState extends State<HomeSreen> {
             ],
           ),
         ),
-      )
+      ),
+
+      
     );
   }
 }
