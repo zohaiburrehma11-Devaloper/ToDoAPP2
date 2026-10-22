@@ -12,71 +12,89 @@ import '../../utills/constants/colors.dart';
     @override
     Widget build(BuildContext context) {
       return  Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: ToDoAppcolors.fontcolor,
         appBar: AppBar(
           title: Text('Add Task'),
         ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-                SizedBox(height: 90,),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: TextWidget1(text: 'Title', color: Colors.white, size: 18, weight: FontWeight.w300),
-              ),
-          SizedBox(height: 9,),
-          CoustomTextFormFields(hint: 'Enter your Task Title', n1controller: Titlecontroller,),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: TextWidget1(text: 'Task', color: Colors.white, size: 18, weight: FontWeight.w300),
-              ),
-              SizedBox(height: 9,),
-          CoustomTextFormFields(hint: 'Enter your Task ', n1controller: Taskcontroller,),
-           SizedBox(height: 30,),
-           TextButton(onPressed: ()
-           async{
-             if(Titlecontroller.text.trim().isEmpty)
-               {
-                 if(Taskcontroller.text.trim().isEmpty){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                     SnackBar(content: Text('Please fill All Feilds'))
-                   );
-                 }
-                 return;
-               }
-             String tasksid= DateTime.now().toString();
-             String Docid= FirebaseAuth.instance.currentUser!.uid;
-             await FirebaseFirestore.instance.collection('user-data').doc(Docid).collection('Task_data').doc().set({
-               'Title':Titlecontroller.text,
-               'Task':Taskcontroller.text,
-                'Taskid':tasksid,
-               'Status':'incomplete',
-             }).then((onValue){
-               Navigator.pop(context);
-             }).onError((error,handleError){
-               ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(content: Text("Task not added Error Accour"))
-               );
-             });
-           },
-               child: Container(
-                 height:40 ,
-                 width: 320,
-                 decoration: BoxDecoration(
-                   color: ToDoAppcolors.PrimaryColor2,
-                   borderRadius: BorderRadius.circular(10),
-                 ),
-                 child:
-                 Center(child:
-                 TextWidget1(
-                   text: 'Add', color: ToDoAppcolors.PrimaryColor1, size: 19,
-                 ),
-                 ),
-               ),)
-          ],
+        body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment(100, 65),
+                colors: [
+                  ToDoAppcolors.PrimaryColor1,
+                  ToDoAppcolors.PrimaryColor2,
+                  ToDoAppcolors.PrimaryColor3,
+                ])
+          ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                  SizedBox(height: 90,),
+                Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: TextWidget1(text: 'Title', color: Colors.white, size: 18, weight: FontWeight.w300),
                 ),
+            SizedBox(height: 13,),
+            CoustomTextFormFields(hint: 'Enter your Task Title', n1controller: Titlecontroller,),
+                SizedBox(height: 13,),
+                Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: TextWidget1(text: 'Task', color: Colors.white, size: 18, weight: FontWeight.w300),
+                ),
+                SizedBox(height: 13,),
+            CoustomTextFormFields(hint: 'Enter your Task ', n1controller: Taskcontroller,),
+             SizedBox(height: 50,),
+             Center(
+               child: TextButton(onPressed: ()
+               async{
+                 if(Titlecontroller.text.trim().isEmpty)
+                   {
+                     if(Taskcontroller.text.trim().isEmpty){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(content: Text('Please fill All Feilds'))
+                       );
+                     }
+                     return;
+                   }
+                 String tasksid= DateTime.now().toString();
+                 String Docid= FirebaseAuth.instance.currentUser!.uid;
+                 await FirebaseFirestore.instance.collection('user-data').doc(Docid).collection('Task_data').doc().set({
+                   'Title':Titlecontroller.text,
+                   'Task':Taskcontroller.text,
+                    'Taskid':tasksid,
+
+                   'Status':'incomplete',
+
+                 }).then((onValue){
+                   Navigator.pop(context);
+                 }).onError((error,handleError){
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(content: Text("Task not added Error Accour"))
+                   );
+                 });
+               },
+                   child: Container(
+                     height:40 ,
+                     width: 320,
+                     decoration: BoxDecoration(
+                       color: ToDoAppcolors.PrimaryColor2,
+                       borderRadius: BorderRadius.circular(10),
+                     ),
+                     child:
+                     Center(child:
+                     TextWidget1(
+                       text: 'Add', color: ToDoAppcolors.PrimaryColor1, size: 19,
+                     ),
+                     ),
+                   ),),
+             )
+            ],
+                  ),
+          ),
         ),
       );
     }

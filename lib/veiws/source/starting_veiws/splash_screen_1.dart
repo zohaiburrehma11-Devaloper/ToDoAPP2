@@ -55,29 +55,32 @@ class _SplashScreen_1State extends State<SplashScreen_1> {
             ToDoAppcolors.PrimaryColor3,
           ])
         ),
-        child: Column(
-          children: [
-            SizedBox(height: 200,),
-           Center(
-             child: CircleAvatar(
-               radius: 45,
-               backgroundColor: Colors.transparent,
-               child: Image.asset(images.onboarding_pic_1,fit: BoxFit.cover,),
-             ),
-           )   ,
-            SizedBox(height: 50,),
-            TextWidget1(
-                text: 'TO DO',
-                color: ToDoAppcolors.fontcolor,
-                size: 20,
-              weight: FontWeight.bold,
-            ),
-           SizedBox(height: 200,),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              SizedBox(height: 200,),
+             Center(
+               child: CircleAvatar(
+                 radius: 45,
+                 backgroundColor: Colors.transparent,
+                 child: Image.asset(images.onboarding_pic_1,fit: BoxFit.cover,),
+               ),
+             )   ,
+              SizedBox(height: 50,),
+              TextWidget1(
+                  text: 'TO DO',
+                  color: ToDoAppcolors.fontcolor,
+                  size: 20,
+                weight: FontWeight.bold,
+              ),
+             SizedBox(height: 200,),
 
-            Center(child:
-              TextWidget1(text: 'v :1.0.0', color: ToDoAppcolors.fontcolor, size: 18),)
+              Center(child:
+                TextWidget1(text: 'v :1.0.0', color: ToDoAppcolors.fontcolor, size: 18),)
 
-          ],
+            ],
+          ),
         ),
       ),
     );

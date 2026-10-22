@@ -12,6 +12,7 @@ class ToDoAppcolors
     static Color iconcolor2=Color(0xffE76666);
     static Color fontcolor=Color(0xffFFFFFF);
      static Color fontcolor2=Colors.black;
+     static Color fontcolor3=Colors.black45;
     static Color signcolor=Color(0xff0EA5E9);
 
 
