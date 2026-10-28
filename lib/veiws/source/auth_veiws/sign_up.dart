@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/veiws/components/coustum_Textformfield.dart';
 import 'package:todoapp/veiws/components/text_widget.dart';
-import 'package:todoapp/veiws/source/app_veiw/home_screen.dart';
+import 'package:todoapp/veiws/source/app_veiw/main_Screen.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 
 import 'package:todoapp/veiws/utills/constants/colors.dart';
@@ -133,7 +133,7 @@ class _Sign_upState extends State<Sign_up> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HomeSreen(),
+                              builder: (context) => const MainScreen(),
                             ),
                           );
 
@@ -144,7 +144,7 @@ class _Sign_upState extends State<Sign_up> {
                         // Navigate to Home Screen
                         Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const HomeSreen())
+                            MaterialPageRoute(builder: (context) => const MainScreen())
                         );
                       }).onError((error, handleError) {
                         // Error Handling

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/veiws/components/text_widget.dart';
-import 'package:todoapp/veiws/source/app_veiw/home_screen.dart';
+import 'package:todoapp/veiws/source/app_veiw/main_Screen.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 import 'package:todoapp/veiws/source/auth_veiws/sign_up.dart';
 import 'package:todoapp/veiws/source/starting_veiws/splash_screen_2.dart';
@@ -36,7 +36,7 @@ class _SplashScreen_1State extends State<SplashScreen_1> {
             });
       }
     else{
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeSreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MainScreen()));
     }
    }
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class _SplashScreen_1State extends State<SplashScreen_1> {
 
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
-// import 'package:todoapp/veiws/source/app_veiw/home_screen.dart';
+// import 'package:todoapp/veiws/source/app_veiw/main_Screen.dart';
 // import 'package:todoapp/veiws/source/auth_veiws/sign_in.dart';
 // import 'package:todoapp/veiws/utills/constants/images.dart';
 //
